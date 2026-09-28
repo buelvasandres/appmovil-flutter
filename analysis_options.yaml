@@ -1,0 +1,4 @@
+# Reglas de análisis por defecto del SDK de Flutter.
+analyzer:
+  exclude:
+    - build/**
