@@ -92,7 +92,7 @@ web/                      Archivos para ejecutarla en el navegador
 
 > Si la página queda en blanco, ejecuta el paso 3 agregando `--release`.
 
-### Opción B — En tu computador (requiere instalar Flutter)
+### Opción B — En el computador (requiere instalar Flutter)
 
 1. Instala Flutter siguiendo https://docs.flutter.dev/get-started/install y la extensión
    **Flutter** de VS Code.
