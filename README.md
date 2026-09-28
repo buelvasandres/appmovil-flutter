@@ -1,68 +1,127 @@
 # Catálogo Express
 
-Aplicación móvil de comercio electrónico desarrollada en **Flutter** para el curso de
-Desarrollo de Aplicaciones Móviles (Politécnico Grancolombiano, grupo G10).
+Aplicación móvil de compras en línea desarrollada en **Flutter** para el curso de
+Desarrollo de Aplicaciones Móviles (Politécnico Grancolombiano, grupo G10). Permite
+consultar un catálogo de productos, guardarlos en favoritos, comprarlos, seguir el
+estado de los pedidos y recibir notificaciones. Incluye un módulo para que el
+administrador gestione el catálogo.
 
-La app permite consultar un catálogo de productos, buscarlos y filtrarlos, guardarlos en
-favoritos, agregarlos al carrito, finalizar la compra, seguir el estado de los pedidos y
-recibir notificaciones. Incluye un módulo de administración del catálogo.
+**Integrantes:** Andres Felipe Buelvas Rivera, Yair Alejandro Castaneda Vargas,
+Alexis Carmona Pelaez, Daniel Castelblanco.
 
-## Cuentas de prueba
+---
 
-| Rol           | Correo               | Contraseña |
-|---------------|----------------------|------------|
-| Cliente       | demo@catalogo.com    | 123456     |
-| Administrador | admin@catalogo.com   | admin123   |
+## 1. Estado actual del proyecto
 
-También se puede crear una cuenta nueva desde "Regístrate aquí".
+La app ya es navegable de punta a punta y cubre la mayoría de requerimientos
+funcionales del documento maestro. Por ahora los datos son de ejemplo y viven en la
+memoria del celular: al cerrar la app todo vuelve a su estado inicial. Conectarla a una
+base de datos es el siguiente paso.
 
-## Funciones implementadas en esta entrega
-
-| Módulo | Requerimientos |
+| Módulo | Qué funciona hoy |
 |---|---|
-| Gestión de usuarios | RF-01 Registro, RF-02 Login, RF-03 Cerrar sesión, RF-04 Correo duplicado, RF-05 Ver perfil, RF-06 Editar perfil |
-| Catálogo | RF-08 Consultar, RF-09 Detalle, RF-13 Buscar, RF-14 Filtrar (categoría, precio, disponibilidad, orden), RF-16 Disponible/agotado, RF-17 Actualización inmediata |
-| Interacciones | RF-18 Favoritos, RF-19 Calificaciones y comentarios |
-| Carrito y compras | RF-20 Agregar, RF-21 Editar cantidades/eliminar, RF-22 Finalizar compra (dirección y método de pago), RF-23 Historial de pedidos |
-| Notificaciones | RF-24 Compra confirmada, RF-25 Cambio de estado, RF-26 Cancelación, RF-27 Historial, RF-28 Marcar como leídas, RF-29 Ofertas y novedades |
-| Administración | RF-07/30 Registrar, RF-10/32 Modificar, RF-11/33 Eliminar, RF-12/40 Código duplicado, RF-15/34 Categorías, RF-31 Consultar, RF-35 Precios, RF-36 Inventario, RF-37 Estado según stock, RF-39 Validación, RF-41 Activar/desactivar, RF-42 Reflejo inmediato |
+| Usuarios | Registro (sin correos repetidos), inicio y cierre de sesión, ver y editar perfil |
+| Catálogo | Listado, detalle, búsqueda, filtros por categoría/precio/disponibilidad, productos agotados |
+| Interacción | Favoritos, calificaciones y comentarios |
+| Carrito y compras | Agregar, cambiar cantidades, eliminar, finalizar compra con dirección y pago simulado, historial de pedidos |
+| Notificaciones | Compra confirmada, cambio de estado, cancelación, ofertas; marcar como leídas |
+| Administración | Crear, editar, eliminar, activar/desactivar productos; precios, inventario y categorías |
 
-El pago es **simulado**. Para probar el manejo de errores en el pago, se puede usar una
-tarjeta de 16 dígitos que termine en `0000`: la transacción se rechaza sin generar el pedido.
+**Pendiente:** base de datos o backend, carga de imágenes desde la galería (RF-38),
+recuperación de contraseña y notificaciones push reales.
 
-## Pendiente para próximas entregas
+### Cuentas de prueba
 
-- Base de datos / backend (por ahora los datos viven en memoria y se reinician al cerrar la app).
-- RF-38 Carga de imágenes de productos desde la galería.
-- Recuperación de contraseña y notificaciones push reales.
+| Rol | Correo | Contraseña |
+|---|---|---|
+| Cliente | demo@catalogo.com | 123456 |
+| Administrador | admin@catalogo.com | admin123 |
 
-## Estructura
+Para probar un **pago rechazado**, paga con tarjeta usando 16 dígitos que terminen en `0000`.
+
+---
+
+## 2. Cómo se construyó
+
+- **Tecnología:** Flutter y Dart, con componentes Material 3. No usa paquetes externos,
+  solo el SDK de Flutter, para que sea fácil de ejecutar y compilar.
+- **Diseño:** pantallas basadas en el mockup de Mockplus (login, registro, catálogo,
+  menú lateral, perfil y notificaciones). El logo, las fotos de productos y el ícono de
+  la app se tomaron del mismo mockup.
+- **Lógica:** un único estado global (`AppState`) guarda usuarios, productos, carrito,
+  pedidos y notificaciones, y avisa a las pantallas cuando algo cambia para que se
+  actualicen solas.
+- **APK:** se compila automáticamente en la nube con **GitHub Actions** cada vez que se
+  suben cambios a `main`. No hace falta instalar Android Studio.
 
 ```
 lib/
-  main.dart                 Punto de entrada
-  theme.dart                Colores y estilos del mockup
-  models.dart               Usuario, Producto, Carrito, Pedido, Notificación
-  app_state.dart            Lógica de negocio y datos de ejemplo
-  widgets/common.dart       Banner, menú lateral, tarjeta de producto, utilidades
-  screens/                  Pantallas (login, registro, catálogo, detalle, carrito,
-                            checkout, pedidos, notificaciones, perfil, favoritos, admin)
-assets/images/              Logo e imágenes de productos
-branding/android_icons/     Ícono de la app
-.github/workflows/          Compilación automática del APK
+  main.dart               Punto de entrada
+  theme.dart              Colores y estilos del mockup
+  models.dart             Usuario, Producto, Carrito, Pedido, Notificación
+  app_state.dart          Lógica de negocio y datos de ejemplo
+  widgets/common.dart     Banner, menú lateral, tarjeta de producto, utilidades
+  screens/                Una pantalla por archivo
+assets/images/            Logo e imágenes de productos
+branding/android_icons/   Ícono de la app
+web/                      Archivos para ejecutarla en el navegador
+.github/workflows/        Compilación automática del APK
 ```
 
-## Cómo se genera el APK
+---
 
-El APK se compila automáticamente con **GitHub Actions** cada vez que se suben cambios a
-la rama `main` (o manualmente desde la pestaña **Actions → Build APK → Run workflow**).
-Al terminar, el archivo `CatalogoExpress.apk` queda disponible en la sección **Artifacts**
-de la ejecución.
+## 3. Cómo ejecutarla
 
-Para compilarlo localmente (requiere Flutter instalado):
+### Opción A — En el navegador, sin instalar nada (GitHub Codespaces)
 
-```
-flutter create --platforms=android --project-name catalogo_express --org co.edu.poligran .
-flutter pub get
-flutter build apk --release
-```
+1. En este repositorio: **Code → Codespaces → Create codespace on main**. Se abre VS Code
+   en el navegador. (Si ya tienes uno creado, ábrelo desde la misma lista y salta al paso 3.)
+2. En la **Terminal** de abajo, instala Flutter (solo la primera vez, tarda unos minutos):
+   ```bash
+   git clone https://github.com/flutter/flutter.git -b stable --depth 1 ~/flutter
+   echo 'export PATH="$PATH:$HOME/flutter/bin"' >> ~/.bashrc && source ~/.bashrc
+   flutter --version
+   ```
+3. Ejecuta la app:
+   ```bash
+   flutter run -d web-server --web-port 8080 --web-hostname 0.0.0.0
+   ```
+4. Ve a la pestaña **Puertos**, busca el **8080** y haz clic en el ícono del globo.
+   Para verla con tamaño de celular: **F12** → ícono del teléfono.
+5. Si cambias el código, presiona **R** en la terminal para recargar. **q** la detiene.
+
+> Si la página queda en blanco, ejecuta el paso 3 agregando `--release`.
+
+### Opción B — En tu computador (requiere instalar Flutter)
+
+1. Instala Flutter siguiendo https://docs.flutter.dev/get-started/install y la extensión
+   **Flutter** de VS Code.
+2. Clona el repositorio y entra a la carpeta:
+   ```bash
+   git clone https://github.com/buelvasandres/appmovil-flutter.git
+   cd appmovil-flutter
+   ```
+3. Genera la carpeta de Android (solo la primera vez) y descarga dependencias:
+   ```bash
+   flutter create --platforms=android --project-name catalogo_express --org co.edu.poligran .
+   flutter pub get
+   ```
+4. Ejecuta: `flutter run -d chrome` para el navegador, o `flutter run` con un celular
+   conectado por USB (depuración USB activada) o un emulador.
+
+### Opción C — Instalar el APK en un celular Android
+
+1. Descarga `CatalogoExpress.apk` desde la sección **Releases** del repositorio
+   (o desde **Actions → última ejecución → Artifacts**).
+2. Ábrelo en el celular y permite "instalar apps de origen desconocido" si lo pide.
+
+---
+
+## 4. Cómo trabajamos en equipo
+
+- `main` siempre debe funcionar: cada cambio que llega ahí genera un APK nuevo.
+- Cada integrante trabaja en su propia rama, por ejemplo `feature/carrito`, y al terminar
+  abre un **Pull Request** hacia `main` para que otro lo revise antes de unirlo.
+- En Codespaces: clic en el nombre de la rama (abajo a la izquierda) → **Crear nueva rama**;
+  haz tus cambios, **Confirmación** (commit) y **Publicar rama**. Luego en GitHub aparece
+  el botón **Compare & pull request**.
